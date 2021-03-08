@@ -1,0 +1,15 @@
+# rules.toml
+
+[official]
+    [official.deck]
+    n_cards = 108           # Number of     cards                   in total
+    n_colors = 4            # Number of     colors/suits            in total
+    n_wilds = 4             # Number of     Wildcards               in total
+    n_wildfours = 4         # Number of     Draw-Four-Wildcards     in total
+    
+    n_cards_per_c = 25      # Number of     total cards             per color
+    n_zeros_per_c = 1       # Number of     zeros                   per color
+    n_1to9_per_c = 2        # Number of     cards 1-9               per color
+    n_skip_per_c = 2        # Number of     Skips                   per color
+    n_draw2_per_c = 2       # Number of     Draw 2                  per color
+    n_reverse_per_c = 2     # Number of     Reverse                 per color
