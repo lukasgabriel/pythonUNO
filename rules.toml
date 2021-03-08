@@ -6,10 +6,22 @@
     n_colors = 4            # Number of     colors/suits            in total
     n_wilds = 4             # Number of     Wildcards               in total
     n_wildfours = 4         # Number of     Draw-Four-Wildcards     in total
-    
+
     n_cards_per_c = 25      # Number of     total cards             per color
     n_zeros_per_c = 1       # Number of     zeros                   per color
     n_1to9_per_c = 2        # Number of     cards 1-9               per color
     n_skip_per_c = 2        # Number of     Skips                   per color
     n_draw2_per_c = 2       # Number of     Draw 2                  per color
     n_reverse_per_c = 2     # Number of     Reverse                 per color
+
+    [official.game]
+    n_start_cards = 7       # Number of cards dealt to each player at the start
+    progressive = false     # If penalty cards can be stacked
+    ext_progressive = false # If penalty cards can be stacked, even on 
+                            # mismatching Plus-Cards (+4 on +2 and vice versa)
+
+    [official.points]
+    uno_miss_penalty = 2    # How high is the card penalty for missing the "Uno!" call
+    winning_score = 500     # Score required to win the game
+    action_card_points = 20 # How many points the colored action cards are worth
+    wild_card_points = 50   # How many points the wildcards are worth
