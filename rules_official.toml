@@ -20,10 +20,10 @@ n_start_cards = 7       # Number of cards dealt to each player at the start
 progressive = false     # If penalty cards can be stacked
 ext_progressive = false # If penalty cards can be stacked, even on 
                         # mismatching Plus-Cards (+4 on +2 and vice versa)
+uno_miss_penalty = 2    # How high is the card penalty for missing the "Uno!" call
+winning_score = 500     # Score required to win the game
 
 
 [points]
-uno_miss_penalty = 2    # How high is the card penalty for missing the "Uno!" call
-winning_score = 500     # Score required to win the game
 action_card_points = 20 # How many points the colored action cards are worth
 wild_card_points = 50   # How many points the wildcards are worth
