@@ -32,8 +32,8 @@ class Deck:
             print("Invalid ruleset.")
 
         for i in (range(self.deck_ref['n_zeros_per_c'] * self.deck_ref['n_colors'])):
-            deck.append(("0", format(counter, '02x')))
-            counter += 1
+            deck.append(Card(c_type, c_color, self.ruleset))
+
         
         pass
     def shuffle(self):

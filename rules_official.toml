@@ -2,6 +2,9 @@
 
 
 [deck]
+    [types]
+
+[amounts]
 n_cards = 108           # Number of     cards                   in total
 n_colors = 4            # Number of     colors/suits            in total
 n_wilds = 4             # Number of     Wildcards               in total
