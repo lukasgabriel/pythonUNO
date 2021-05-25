@@ -25,7 +25,10 @@ class Card():
 
     def assert_ruleset(self):
         try:
-            assert self.c_color in range(0, self.deck_ref["n_colors"]) # 4 Colors: 0, 1, 2, 3.
+            if self.c_type not in ["wild", "wild4"]:
+                assert self.c_color in range(0, self.deck_ref["n_colors"])  # 4 Colors: 0, 1, 2, 3
+            else:
+                assert self.c_color == 4 # 4 = No Color (For Wildcards and Wildfours)
             assert self.c_type in self.deck_ref["types"]
             assert self.c_value in range(0, 9) or self.c_value in self.points_ref.values()
         except AssertionError:
@@ -36,11 +39,16 @@ class Card():
             name = self.c_value
         else: 
             name = {"wild": "W", "wild4": "F", "draw2": "D", "reverse": "R", "skip": "S"}[self.c_type]
-        color = ["R", "Y", "G", "B"][self.c_color]
+        color = ["R", "Y", "G", "B", "N"][self.c_color]
         return f"{color}{name}{self.c_itera}"
 
     def make_desc(self):
-        pass
+        if self.c_type in ["1to9", "zero"]:
+            name = ["Zero ", "One ", "Two ", "Three ", "Four ", "Five ", "Six ", "Seven ", "Eight ", "Nine "][self.c_value]
+        else: 
+            name = {"wild": "Wild-Card ", "wild4": "Draw-Four Wild-Card ", "draw2": "Draw-Two Card ", "reverse": "Reverse Card ", "skip": "Skip Card "}[self.c_type]
+        color = ["Red ", "Yellow ", "Green ", "Blue ", ""][self.c_color]
+        return f"{color}{name}{self.c_itera + 1}"
 
     def __repr__(self):
         return f"Card('{self.c_type}', {self.c_color}, {self.c_value}, {self.c_itera})"
@@ -84,10 +92,10 @@ class Deck():
                 self.deck.append(Card(c_type = "reverse", c_color = color, c_value = self.points_ref["action_card_points"], c_itera = itera))
 
         for itera in range(self.deck_ref['n_wild']):
-            self.deck.append(Card(c_type = "wild", c_color = color, c_value = self.points_ref["wild_card_points"], c_itera = itera))
+            self.deck.append(Card(c_type = "wild", c_color = 4, c_value = self.points_ref["wild_card_points"], c_itera = itera))
 
         for itera in range(self.deck_ref['n_wild4']):
-            self.deck.append(Card(c_type = "wild4", c_color = color, c_value = self.points_ref["wild_card_points"], c_itera = itera))
+            self.deck.append(Card(c_type = "wild4", c_color = 4, c_value = self.points_ref["wild_card_points"], c_itera = itera))
 
         pass
 
@@ -156,4 +164,7 @@ deck = Deck("test2")
 deck.shuffle()
 print(deck)
 print(deck.__repr__())
+
+for card in deck.deck:
+    print(card.make_desc())
 #print(deck.deck_ref)
