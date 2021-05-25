@@ -1,7 +1,8 @@
 # deck.py
 
 from math import floor
-from random import random
+from time import time_ns
+from random import seed, random
 import toml
 
 
@@ -46,7 +47,12 @@ class Card():
 
 
 class Deck():
-    def __init__(self, seed = None, ruleset: dict = toml.load("rules_official.toml")):
+    def __init__(self, d_seed = None, ruleset: dict = toml.load("rules_official.toml")):
+
+        if not d_seed:
+            d_seed = time_ns()
+        self.d_seed = d_seed
+        seed(a=d_seed)
 
         self.deck_ref = ruleset["deck"]
         self.game_ref = ruleset["game"]
@@ -125,7 +131,7 @@ class Deck():
         return str([card.__str__() for card in self.deck])
 
     def __repr__(self):
-        return f"Deck({self.seed})"
+        return f"Deck(seed='{self.d_seed}')"
 
 
 """ my_deck = Deck()
@@ -146,7 +152,8 @@ for i in range(0, 9):
         for c in self.deck_ref["n_colors"]: """
             
 
-deck = Deck()
+deck = Deck("test2")
 deck.shuffle()
 print(deck)
+print(deck.__repr__())
 #print(deck.deck_ref)
