@@ -2,12 +2,15 @@
 
 from math import floor
 from time import time_ns
-from random import seed, random
+from random import seed, random, randint
 import toml
 
 
 class Card():
     def __init__(self, c_type: str, c_color: int, c_value: int, c_itera: int, ruleset: dict = toml.load("rules_official.toml")):
+        '''
+        The Card Class represents a single card and its attributes.
+        '''
 
         self.deck_ref = ruleset["deck"]
         self.game_ref = ruleset["game"]
@@ -43,6 +46,9 @@ class Card():
         return f"{color}{name}{self.c_itera}"
 
     def make_desc(self):
+        '''
+        Constructs a readable description of the card.
+        '''
         if self.c_type in ["1to9", "zero"]:
             name = ["Zero ", "One ", "Two ", "Three ", "Four ", "Five ", "Six ", "Seven ", "Eight ", "Nine "][self.c_value]
         else: 
@@ -56,6 +62,9 @@ class Card():
 
 class Deck():
     def __init__(self, d_seed = None, ruleset: dict = toml.load("rules_official.toml")):
+        '''
+        The Deck Class handles building, shuffling and resetting of the deck and drawing and discarding of cards.
+        '''
 
         if not d_seed:
             d_seed = time_ns()
@@ -73,6 +82,9 @@ class Deck():
         self.build()
 
     def build(self):
+        '''
+        Builds the deck under current rules and returns it.
+        '''
         for color in range(self.deck_ref['n_colors']):
 
             for itera in range(self.deck_ref['n_zeros_per_c']):
@@ -97,9 +109,12 @@ class Deck():
         for itera in range(self.deck_ref['n_wild4']):
             self.deck.append(Card(c_type = "wild4", c_color = 4, c_value = self.points_ref["wild_card_points"], c_itera = itera))
 
-        pass
+        return self.deck
 
     def shuffle(self):
+        '''
+        Shuffles the deck in-place and returns it.
+        '''
         l = len(self.deck)
         while l > 1:
             i = int(floor(random() * l))
@@ -107,11 +122,29 @@ class Deck():
             self.deck[i], self.deck[l] = self.deck[l], self.deck[i]
         return self.deck
 
-    def draw(self):
-        pass
+    def draw(self, n: int = 1):
+        '''
+        Draws n cards from the deck.
+        '''
+        if n > 1:
+            cards = []
+            while n > 0:
+                cards.append(self.deck.pop(0))
+                n -= 1
+            return cards
+        else:
+            return self.deck.pop(0)
 
-    def discard(self):
-        pass
+    def discard(self, cards):
+        '''
+        Adds one or more cards to the deck's discard pile
+        '''
+        if type(cards) in [list, tuple]:
+            for card in cards:
+                self.pile.insert(0, card)
+        else:
+            self.pile.insert(0, cards)
+        return
 
     def assert_ruleset(self):
         try:
@@ -142,12 +175,15 @@ class Deck():
         return f"Deck(seed='{self.d_seed}')"
             
 
-
-deck = Deck("test2")
-deck.shuffle()
-print(deck)
-print(deck.__repr__())
-
-for card in deck.deck:
-    print(card.make_desc())
-
+def random_cards(n: int = 1):
+    '''
+    Returns a single card, or - if n is specified - a list of cards, drawn from a standard deck with replacement.
+    '''
+    cards = []
+    deck = Deck()
+    while n > 0:
+        cards.append(deck.deck[randint(0, 99)])
+        n -= 1
+    if n == 1:
+        return cards[0]
+    return cards
