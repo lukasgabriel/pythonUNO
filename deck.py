@@ -140,25 +140,8 @@ class Deck():
 
     def __repr__(self):
         return f"Deck(seed='{self.d_seed}')"
-
-
-""" my_deck = Deck()
-
-
-
-#while counter := 0 < deck['n_cards']:
-counter = 0
-deck = []
-
-for _ in (range(self.deck_ref['n_zeros_per_c'] * self.deck_ref['n_colors'])):
-    deck.append({"0":format(counter, '02x')})
-    counter += 1
-
-
-for i in range(0, 9):
-    for _ in range(self.deck_ref["n_1to9_per_c"]):
-        for c in self.deck_ref["n_colors"]: """
             
+
 
 deck = Deck("test2")
 deck.shuffle()
@@ -167,4 +150,4 @@ print(deck.__repr__())
 
 for card in deck.deck:
     print(card.make_desc())
-#print(deck.deck_ref)
+
