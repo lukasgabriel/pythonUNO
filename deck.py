@@ -33,7 +33,7 @@ class Card():
             else:
                 assert self.c_color == 4 # 4 = No Color (For Wildcards and Wildfours)
             assert self.c_type in self.deck_ref["types"]
-            assert self.c_value in range(0, 9) or self.c_value in self.points_ref.values()
+            assert self.c_value in range(0, 10) or self.c_value in self.points_ref.values()
         except AssertionError:
             print("Invalid ruleset or card.")
 
@@ -91,7 +91,7 @@ class Deck():
                 self.deck.append(Card(c_type = "zero", c_color = color, c_value = 0, c_itera = itera))
 
             for itera in range(self.deck_ref['n_1to9_per_c']):
-                for i in range(1, 9):
+                for i in range(1, 10):
                     self.deck.append(Card(c_type = "1to9", c_color = color, c_value = i, c_itera = itera))
 
             for itera in range(self.deck_ref['n_skip_per_c']):
@@ -122,7 +122,7 @@ class Deck():
             self.deck[i], self.deck[l] = self.deck[l], self.deck[i]
         return self.deck
 
-    def reset(self, n: int):
+    def reset(self, n: int = 0):
         '''
         Shuffles the discard pile back into the deck.
         '''
@@ -131,28 +131,33 @@ class Deck():
         self.pile = []
         self.shuffle()
 
-        if n:
+        if n > 0:
             return self.draw(n)
-        return
+        return []
 
     def draw(self, n: int = 1):
         '''
         Draws n cards from the deck.
         '''
+        assert n <= len(self.pile) + len(self.deck)
         remaining = len(self.deck)
         cards = []
 
         if remaining <= n:
             dif = n - remaining
-            while dif > 0:
+            while remaining > 0:
                 cards.append(self.deck.pop(0))
-                dif -= 1
-            cards.append(self.reset())
+                remaining -= 1
+            cards = cards + self.reset(dif)[::-1]
+        else:
+            while n > 0:
+                cards.append(self.deck.pop(0))
+                n -= 1
 
-        if n > 1:
+        if n == 1:
             return cards[0]
         else:
-            return cards
+            return cards[::-1]
 
     def discard(self, cards):
         '''
@@ -206,3 +211,4 @@ def random_cards(n: int = 1):
     if n == 1:
         return cards[0]
     return cards
+
