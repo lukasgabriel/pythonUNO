@@ -122,18 +122,37 @@ class Deck():
             self.deck[i], self.deck[l] = self.deck[l], self.deck[i]
         return self.deck
 
+    def reset(self, n: int):
+        '''
+        Shuffles the discard pile back into the deck.
+        '''
+
+        self.deck = self.pile
+        self.pile = []
+        self.shuffle()
+
+        if n:
+            return self.draw(n)
+        return
+
     def draw(self, n: int = 1):
         '''
         Draws n cards from the deck.
         '''
-        if n > 1:
-            cards = []
-            while n > 0:
+        remaining = len(self.deck)
+        cards = []
+
+        if remaining <= n:
+            dif = n - remaining
+            while dif > 0:
                 cards.append(self.deck.pop(0))
-                n -= 1
-            return cards
+                dif -= 1
+            cards.append(self.reset())
+
+        if n > 1:
+            return cards[0]
         else:
-            return self.deck.pop(0)
+            return cards
 
     def discard(self, cards):
         '''
